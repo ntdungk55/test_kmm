@@ -1,0 +1,13 @@
+## This file must *NOT* be checked into Version Control Systems,
+# as it contains information specific to your local configuration.
+#
+# Copy this file to local.properties and fill in your values.
+
+# Location of the Android SDK
+sdk.dir=/path/to/your/android/sdk
+
+# Claude API Configuration
+claude.api.key=Q3UldjmxByNK6mTzyIwy6Ab1p9ba7HsA_w6ARoYG7GpA-ieIIRgAA
+
+# MCP Server Configuration
+mcp.server.url=http://192.168.1.3:8081/mcp
