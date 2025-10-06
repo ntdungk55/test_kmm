@@ -9,7 +9,7 @@ plugins {
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.jetbrainsCompose)
-    id("com.codingfeline.buildkonfig") version "0.17.1"
+    alias(libs.plugins.buildkonfig)
 }
 
 kotlin {
