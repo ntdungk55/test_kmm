@@ -1,6 +1,7 @@
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.util.Properties
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -96,14 +97,15 @@ val lp = Properties().apply {
 }
 
 buildkonfig {
-    packageName = "com.yourapp.shared" // nơi sinh class BuildKonfig
+    packageName = "mcpchatapp.shared" // nơi sinh class BuildKonfig
 
     defaultConfigs {
         // Ưu tiên lấy từ local.properties, nếu thiếu dùng fallback
         buildConfigField(
-            com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING,
+            Type.STRING,
             "MCP_SERVER_URL",
-            lp.getProperty("MCP_SERVER_URL") ?: "https://dev.example.com"
+            lp.getProperty("MCP_SERVER_URL","")
         )
+        buildConfigField(Type.STRING, "CLAUDE_API_KEY", lp.getProperty("CLAUDE_API_KEY", ""))
     }
 }

@@ -12,8 +12,8 @@ import io.ktor.client.plugins.logging.*
 import io.ktor.client.plugins.websocket.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
+import mcpchatapp.shared.BuildKonfig
 import org.koin.core.module.dsl.factoryOf
-import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 /**
@@ -41,14 +41,14 @@ val appModule = module {
     single {
         McpClient(
             httpClient = get(),
-            serverUrl = BuildConfig.API_BASE_URL // Configure your MCP server URL
+            serverUrl = BuildKonfig.MCP_SERVER_URL // Configure your MCP server URL
         )
     }
     
     single {
         ClaudeApiClient(
             httpClient = get(),
-            apiKey = "" // Add your Claude API key here or from config
+            apiKey = BuildKonfig.CLAUDE_API_KEY // Add your Claude API key here or from config
         )
     }
     
