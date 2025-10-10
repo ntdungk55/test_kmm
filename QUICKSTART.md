@@ -220,7 +220,7 @@ override suspend fun sendMessage(content: String): Result<Message> = runCatching
     // Mock response
     delay(1000)
     val mockResponse = Message(
-        id = UUID.randomUUID().toString(),
+        id = Random.nextLong().toString(),
         content = "This is a mock response. Set up Claude API key for real responses!",
         role = MessageRole.ASSISTANT
     )

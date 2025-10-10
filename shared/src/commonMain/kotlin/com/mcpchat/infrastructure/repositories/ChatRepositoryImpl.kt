@@ -11,7 +11,7 @@ import com.mcpchat.infrastructure.ai.ClaudeTool
 import com.mcpchat.infrastructure.mcp.McpClient
 import kotlinx.coroutines.flow.*
 import kotlinx.serialization.json.JsonElement
-import java.util.UUID
+import kotlin.random.Random
 
 /**
  * Chat Repository Implementation
@@ -23,7 +23,7 @@ class ChatRepositoryImpl(
 ) : ChatRepository {
     
     private val _chatSession = MutableStateFlow(ChatSession(
-        id = UUID.randomUUID().toString(),
+        id = Random.nextLong().toString(),
         messages = emptyList(),
         availableTools = emptyList(),
         isConnected = false
@@ -52,7 +52,7 @@ class ChatRepositoryImpl(
     override suspend fun sendMessage(content: String): Result<Message> = runCatching {
         // Add user message to session
         val userMessage = Message(
-            id = UUID.randomUUID().toString(),
+            id = Random.nextLong().toString(),
             content = content,
             role = MessageRole.USER
         )
@@ -94,7 +94,7 @@ class ChatRepositoryImpl(
             ?.text ?: "No response"
         
         val assistantMessage = Message(
-            id = UUID.randomUUID().toString(),
+            id = Random.nextLong().toString(),
             content = assistantContent,
             role = MessageRole.ASSISTANT
         )

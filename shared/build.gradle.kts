@@ -2,6 +2,8 @@ import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.util.Properties
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type
+import org.gradle.api.tasks.Exec
+import org.gradle.internal.os.OperatingSystem
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -20,15 +22,24 @@ kotlin {
         }
     }
     
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
-            baseName = "Shared"
-            isStatic = true
-        }
+    val xcfName = "Shared"
+
+    iosX64 {
+      binaries.framework {
+        baseName = xcfName
+      }
+    }
+
+    iosArm64 {
+      binaries.framework {
+        baseName = xcfName
+      }
+    }
+
+    iosSimulatorArm64 {
+      binaries.framework {
+        baseName = xcfName
+      }
     }
     
     sourceSets {
@@ -61,6 +72,9 @@ kotlin {
             implementation(libs.voyager.navigator)
             implementation(libs.voyager.screenmodel)
             implementation(libs.voyager.koin)
+
+            // Clock
+            implementation(libs.kotlinx.datetime)
         }
         
         androidMain.dependencies {
@@ -75,6 +89,7 @@ kotlin {
         
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
+            implementation(libs.ui.uikit)
         }
     }
 }
@@ -108,4 +123,16 @@ buildkonfig {
         )
         buildConfigField(Type.STRING, "CLAUDE_API_KEY", lp.getProperty("CLAUDE_API_KEY", ""))
     }
+}
+
+tasks.register<Exec>("stripXattrsKmpOutputs") {
+    onlyIf { OperatingSystem.current().isMacOsX }
+    commandLine("bash", "-lc",
+        "xattr -rc \"${layout.buildDirectory.get().asFile.absolutePath}\" || true"
+    )
+    isIgnoreExitValue = true
+}
+
+tasks.matching { it.name == "embedAndSignAppleFrameworkForXcode" }.configureEach {
+    dependsOn("stripXattrsKmpOutputs")
 }
